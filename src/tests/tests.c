@@ -12,6 +12,8 @@ int main() {
     test_memset();
     test_strncat();
     test_strchr();
+    test_strncmp();
+    test_strncpy();
     test_strlen();
     return 0;
 }
@@ -40,10 +42,10 @@ void test_memcmp() {
 // Test memory copy
 
 void test_memcpy() {
-    char dest[] = "Copies n characters from src to dest.";
-    const char src[] = "Changer";
-    char* res_cpy = memcpy(dest, src, sizeof(dest));
-    char* res_fcpy = fake_memcpy(dest, src, sizeof(dest));
+    char dest[] = "Main test text.";
+    const char src[] = "Copies up";
+    char* res_cpy = memcpy(dest, src, sizeof(src) - 1);
+    char* res_fcpy = fake_memcpy(dest, src, sizeof(src) - 1);
     printf("%-20s | %-20s | %-20s | %-10s\n", "Memory copy", res_cpy, res_fcpy,
            res_cpy == res_fcpy ? "YES" : "NO");
 }
@@ -79,6 +81,28 @@ void test_strchr() {
     char* res_strchr = strchr(str, *c);
     printf("%-20s | %-20p | %-20p | %-10s\n", "String character", res_strchr, res_strchr,
            res_strchr == res_strchr ? "YES" : "NO");
+}
+
+// Test string compare
+
+void test_strncmp() {
+    const char str1[] = "Compares at most the first n bytes of str1 and str2.";
+    const char str2[] = "Compares at most the first n bytes of str1 and str2.";
+    int res_strncmp = strncmp(str1, str2, 10);
+    int res_fstrncmp = fake_strncmp(str1, str2, 10);
+    printf("%-20s | %-20d | %-20d | %-10s\n", "String compare", res_strncmp, res_fstrncmp,
+           res_strncmp == 0 && res_fstrncmp == 0 ? "YES" : "NO");
+}
+
+// Test string copy
+
+void test_strncpy() {
+    char dest[] = "Main test text.";
+    const char src[] = "Copies up";
+    char* res_strncpy = strncpy(dest, src, sizeof(src) - 1);
+    char* res_fstrncpy = fake_strncpy(dest, src, sizeof(src) - 1);
+    printf("%-20s | %-20s | %-20s | %-10s\n", "String copy", res_strncpy, res_fstrncpy,
+           res_strncpy == res_fstrncpy ? "YES" : "NO");
 }
 
 // Test string length
