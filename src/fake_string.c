@@ -53,9 +53,7 @@ void* fake_memset(void* str, int c, fake_size_t n) {
 char* fake_strncat(char* dest, const char* src, fake_size_t n) {
     unsigned char* p_dest = dest;
 
-    while (*dest != '\0') {
-        dest++;
-    }
+    while (*dest != '\0') dest++;
 
     while (*src != '\0' && n > 0) {
         *dest = *src;
@@ -73,12 +71,31 @@ char* fake_strncat(char* dest, const char* src, fake_size_t n) {
 
 char* fake_strchr(const char* str, int c) {
     while (*str != '\0') {
-        if (*str == c) {
-            return (char*)str;
-        }
+        if (*str == c) return (char*)str;
         str++;
     }
     return FAKE_NULL;
+}
+
+// String compare
+
+int fake_strncmp(const char* str1, const char* str2, fake_size_t n) {
+    for (fake_size_t i = 0; i < n; i++)
+        if (str1[i] != str2[i] || str1[i] == '\0' || str2[i] == '\0') return (str1[i] < str2[i]) ? -1 : 1;
+
+    return 0;
+}
+
+// String copy
+
+char* fake_strncpy(char* dest, const char* src, fake_size_t n) {
+    fake_size_t i;
+
+    for (i = 0; i < n && src[i] != '\0'; i++) dest[i] = src[i];
+
+    for (; i < n; i++) dest[i] = '\0';
+
+    return dest;
 }
 
 // String length

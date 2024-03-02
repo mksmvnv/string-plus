@@ -13,6 +13,8 @@ void* fake_memcpy(void* dest, const void* src, fake_size_t n);
 void* fake_memset(void* str, int c, fake_size_t n);
 char* fake_strncat(char* dest, const char* src, fake_size_t n);
 char* fake_strchr(const char* str, int c);
+int fake_strncmp(const char* str1, const char* str2, fake_size_t n);
+char* fake_strncpy(char* dest, const char* src, fake_size_t n);
 fake_size_t fake_strlen(const char* str);
 
 #endif  // FAKE_STRING_H
