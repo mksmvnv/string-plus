@@ -98,6 +98,25 @@ char* fake_strncpy(char* dest, const char* src, fake_size_t n) {
     return dest;
 }
 
+// String complement span
+
+fake_size_t fake_strcspn(const char* str1, const char* str2) {
+    fake_size_t num = 0;
+
+    while (str1[num] != '\0') {
+        size_t i = 0;
+        while (str2[i] != '\0') {
+            if (str1[num] == str2[i]) {
+                return num;
+            }
+            i++;
+        }
+        num++;
+    }
+
+    return num;
+}
+
 // String length
 
 fake_size_t fake_strlen(const char* str) {
@@ -106,4 +125,96 @@ fake_size_t fake_strlen(const char* str) {
     while (str[len] != '\0') len++;
 
     return len;
+}
+
+// String pointer break
+
+char* fake_strpbrk(const char* str1, const char* str2) {
+    while (*str1) {
+        const char* ptr = str2;
+        while (*ptr) {
+            if (*str1 == *ptr) {
+                return (char*)str1;
+            }
+            ptr++;
+        }
+        str1++;
+    }
+    return NULL;
+}
+
+// String reverse character
+
+char* fake_strrchr(const char* str, int c) {
+    const char* last_occurrence = FAKE_NULL;
+    while (*str) {
+        if (*str == c) {
+            last_occurrence = str;
+        }
+        str++;
+    }
+    return (char*)last_occurrence;
+}
+
+// String string
+
+char* fake_strstr(const char* haystack, const char* needle) {
+    if (*needle == '\0') {
+        return (char*)haystack;
+    }
+
+    while (*haystack) {
+        const char* h = haystack;
+        const char* n = needle;
+
+        while (*n && *h == *n) {
+            h++;
+            n++;
+        }
+
+        if (*n == '\0') {
+            return (char*)haystack;
+        }
+
+        haystack++;
+    }
+
+    return FAKE_NULL;
+}
+
+// String token
+
+char* fake_strtok(char* str, const char* delim) {
+    static char* last_token = FAKE_NULL;
+    if (str != NULL) {
+        last_token = str;
+    } else {
+        if (last_token == FAKE_NULL) {
+            return FAKE_NULL;
+        }
+        str = last_token;
+    }
+
+    while (*str && fake_strchr(delim, *str)) {
+        str++;
+    }
+
+    if (*str == '\0') {
+        last_token = FAKE_NULL;
+        return FAKE_NULL;
+    }
+
+    char* token_start = str;
+    while (*str && !fake_strchr(delim, *str)) {
+        str++;
+    }
+
+    if (*str) {
+        *str = '\0';
+        last_token = str + 1;
+    } else {
+        last_token = FAKE_NULL;
+    }
+
+    return token_start;
 }
