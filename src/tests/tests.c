@@ -14,7 +14,12 @@ int main() {
     test_strchr();
     test_strncmp();
     test_strncpy();
+    test_strcspn();
     test_strlen();
+    test_strpbrk();
+    test_strrchr();
+    test_strstr();
+    test_strtok();
     return 0;
 }
 
@@ -54,9 +59,9 @@ void test_memcpy() {
 
 void test_memset() {
     char str[] = "Test 1";
-    char* c = "x";
-    char* res_set = memset(str, *c, 4);
-    char* res_fset = fake_memset(str, *c, 4);
+    char c = 'x';
+    char* res_set = memset(str, c, 4);
+    char* res_fset = fake_memset(str, c, 4);
     printf("%-20s | %-20s | %-20s | %-10s\n", "Memory set", res_set, res_fset,
            res_set == res_fset ? "YES" : "NO");
 }
@@ -77,8 +82,8 @@ void test_strncat() {
 
 void test_strchr() {
     const char str[] = "Searches for the first occurrence of the character c.";
-    char* c = "f";
-    char* res_strchr = strchr(str, *c);
+    char c = 'f';
+    char* res_strchr = strchr(str, c);
     printf("%-20s | %-20p | %-20p | %-10s\n", "String character", res_strchr, res_strchr,
            res_strchr == res_strchr ? "YES" : "NO");
 }
@@ -105,6 +110,17 @@ void test_strncpy() {
            res_strncpy == res_fstrncpy ? "YES" : "NO");
 }
 
+// String complement span
+
+void test_strcspn() {
+    const char str1[] = "I'm 24 years old.";
+    const char str2[] = "0123456789";
+    fake_size_t res_strcspn = strcspn(str1, str2);
+    fake_size_t res_fstrcspn = fake_strcspn(str1, str2);
+    printf("%-20s | %-20zu | %-20zu | %-10s\n", "String comp. span", res_strcspn, res_fstrcspn,
+           res_strcspn == res_fstrcspn ? "YES" : "NO");
+}
+
 // Test string length
 
 void test_strlen() {
@@ -114,3 +130,47 @@ void test_strlen() {
     printf("%-20s | %-20d | %-20d | %-10s\n", "String length", res_strlen, res_fstrlen,
            res_strlen == res_fstrlen ? "YES" : "NO");
 }
+
+// String pointer break
+
+void test_strpbrk() {
+    const char str1[] = "04.03.2024 Saint-Petersburg";
+    const char str2[] = "Ss";
+    char* res_strpbrk = strpbrk(str1, str2);
+    char* res_fstrpbrk = fake_strpbrk(str1, str2);
+    printf("%-20s | %-20s | %-20s | %-10s\n", "String pointer break", res_strpbrk, res_fstrpbrk,
+           res_strpbrk == res_fstrpbrk ? "YES" : "NO");
+};
+
+// String reverse character
+
+void test_strrchr() {
+    const char str[] = "Searches for the last occurrence @f the character c";
+    int c = '@';
+    char* res_strrchr = strrchr(str, c);
+    char* res_fstrrchr = fake_strrchr(str, c);
+    printf("%-20s | %-20s | %-20s | %-10s\n", "String reverse char.", res_strrchr, res_fstrrchr,
+           res_strrchr == res_fstrrchr ? "YES" : "NO");
+};
+
+// String string
+
+void test_strstr() {
+    const char haystack[] = "Finds the first occurrence of the entire string needle";
+    const char needle[] = "entire";
+    char* res_strstr = strstr(haystack, needle);
+    char* res_fstrstr = fake_strstr(haystack, needle);
+    printf("%-20s | %-20s | %-20s | %-10s\n", "String string", res_strstr, res_fstrstr,
+           res_strstr == res_fstrstr ? "YES" : "NO");
+};
+
+// String token
+
+void test_strtok() {
+    char str[] = "Breaks string str into a series of tokens separated by delim.";
+    const char delim[] = " ";
+    char* res_strtok = strtok(str, delim);
+    char* res_fstrtok = fake_strtok(str, delim);
+    printf("%-20s | %-20s | %-20s | %-10s\n", "String token", res_strtok, res_fstrtok,
+           res_strtok == res_fstrtok ? "YES" : "NO");
+};
