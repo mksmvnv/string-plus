@@ -4,6 +4,8 @@
 
 #include "fake_string.h"
 
+#include "fake_strerror.h"
+
 // Memory character
 
 void* fake_memchr(const void* str, int c, fake_size_t n) {
@@ -117,6 +119,20 @@ fake_size_t fake_strcspn(const char* str1, const char* str2) {
     return num;
 }
 
+// String error
+
+char* fake_strerror(int errnum) {
+    static char result[512] = {'\0'};
+
+    if (errnum <= MIN_ERRLIST || errnum >= MAX_ERRLIST) {
+        sprintf(result, "Unknown error: %d", errnum);
+    } else {
+        fake_strcpy(result, ((char*)error_list[errnum]));
+    }
+
+    return result;
+}
+
 // String length
 
 fake_size_t fake_strlen(const char* str) {
@@ -217,4 +233,15 @@ char* fake_strtok(char* str, const char* delim) {
     }
 
     return token_start;
+}
+
+// Extra func for strerror
+
+void fake_strcpy(char* dest, const char* src) {
+    while (*src) {
+        *dest = *src;
+        dest++;
+        src++;
+    }
+    *dest = '\0';
 }
